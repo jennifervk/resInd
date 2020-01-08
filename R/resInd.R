@@ -120,8 +120,6 @@
 #' y <- resInd(x, d, dr=c(2004.753,2008.751), drd=2004.753, plot=TRUE)
 #'
 #' #Should return a plot and a vector y containing 14 values
-#'
-#'
 
 
 resInd <- function(x, dates, type='irregular', sc=1, order=3,
@@ -236,7 +234,6 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
     amps <- sqrt(cosines^2 + sines^2)
     names(amps) <- rep(1:length(unique(bpp$segment)), order)
 
-
     # Calculate (drought) resilience indicators -------------------------------
 
     ##If no (significant) breakpoint was found set breakpoint position,
@@ -285,7 +282,8 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
         pretrend <- trends[seg1]
 
         #Calculate preNDVI, Magnitude of change (MagA & MagR) based on mean NDVI
-        # of s years before and after BP. Use subset of bpp$response that falls within date vector
+        #of s years before and after BP. Use subset of bpp$response that falls
+        #within date vector
         ti <- c(bpt-s, bpt+s) # +/- s years around breakpoint
         S1 <- subset(bpp, time >= ti[1] & time <= bpt)
         S2 <- subset(bpp, time > bpt & time <= ti[2])
@@ -344,7 +342,6 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
     AmpDiff <- NA
   }
 
-
   # Plotting ----------------------------------------------------------------
 
   if(plot) {
@@ -362,7 +359,6 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
                        "breakdates", "confidence intervals breakdates"),
            col=c("black", "red", "grey28", "blue", "blue"), lty=c(0,1,1,1,3),
            pch=c(4,23,NA,NA,NA), cex=1, bty='n');
-
 
     #Add trend prediction for each segment. Corrected hight of trend line for
     #irregular data: fix harmonic based on mean DOY of observations/segment
@@ -387,7 +383,6 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
                      bpp$time[bpp$segment == seg]), col = 'grey28')
     }
   }
-
 
   # Save and return output --------------------------------------------------
 

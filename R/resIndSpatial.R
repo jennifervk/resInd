@@ -63,7 +63,6 @@
 #'  'bfastSpatial' \url{https://github.com/loicdtx/bfastSpatial}, which you can install
 #'  from github.
 #'
-#'
 #' @author Jennifer von Keyserlingk
 #' @export
 #'
@@ -90,7 +89,6 @@
 #' y <- resIndSpatial(stN, d, dr=c(2004.753,2008.751), drd=2004.753)
 #'
 #'#Should return a raster stack containing 14 layers
-#'}
 
 
 resIndSpatial <- function(x, dates, type='irregular', sc=1, order=3,
@@ -207,7 +205,6 @@ fun <- function(x){
     amps <- sqrt(cosines^2 + sines^2)
     names(amps) <- rep(1:length(unique(bpp$segment)), order)
 
-
     # Calculate (drought) resilience indicators -------------------------------
 
     ##If no (significant) breakpoint fuond set breakpoint position, breakpoint timing,
@@ -317,7 +314,6 @@ fun <- function(x){
     AmpDiff <- NA
   }
 
-
   # Save and return output --------------------------------------------------
 
   #Save all indicators::
@@ -327,7 +323,6 @@ fun <- function(x){
   colnames(resind) <- c('BPNumb', 'Initial NDVI', 'Intercept', 'DBP','BpTime',
                         'Timelag', 'RecTrend', 'PreTrend', 'PreNDVI', 'MagObsA',
                         'MagObsR',   'MagTrendA', 'MagTrendR', 'AmpDiffR')
-
 
   return(resind)
   }
