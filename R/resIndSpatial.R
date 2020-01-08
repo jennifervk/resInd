@@ -36,11 +36,6 @@
 #'
 #'
 #' @author Jennifer von Keyserlingk
-#' @import bfast
-#' @import raster
-#' @import strucchange
-#' @import parallel
-#' @import MASS
 #' @export
 #'
 #' @examples
@@ -50,14 +45,18 @@
 #'
 #' #Plot first 9 layers of raster brick with NDVI scaling factor
 #' sc <- 0.0001
+#' library(raster)
 #' plot(stN*sc, 1:9)
 #'
-#' ##With package "bfastSpatial" you can extract information on acquisition date from typical Landsat file names \url{https://github.com/loicdtx/bfastSpatial}
+#' ##With package "bfastSpatial" you can extract information on acquisition date
+#' # from typical Landsat file names \url{https://github.com/loicdtx/bfastSpatial}
 #' #gs <- getSceneinfo(names(stN))
 #' #d <- gs$date
 #'
 #'\dontrun{
-#'#Run function "resIndSpatial". This requires the function 'mc.calc' from the package "bfastSpatial", which you can install from github \url{https://github.com/loicdtx/bfastSpatial} .
+#'#Run function "resIndSpatial". This requires the function 'mc.calc' from the
+#' package "bfastSpatial", which you can install from github
+#' # \url{https://github.com/loicdtx/bfastSpatial} .
 #' y <- resIndSpatial(stN, d, dr=c(2004.753,2008.751), drd=2004.753)
 #'
 #'#Should return a raster stack containing 14 layers
@@ -122,8 +121,7 @@ resIndSpatial <- function(x, dates, type='irregular', sc=1, order=3,
           #Create column "segment" that indices segment in the dataframe "bpp"
           bpp$segment <- breakfactor(bpoints)
           #RLM fit; I increased the default maxiterations (20 -> 100)
-          formulaS <- response ~ segment/(trend+harmon)
-          m <- rlm (formulaS, data=bpp, maxit=100)
+          m <- rlm (response ~ segment/(trend+harmon), data=bpp, maxit=100)
         }
 
       } else {
@@ -143,7 +141,8 @@ resIndSpatial <- function(x, dates, type='irregular', sc=1, order=3,
       #Add trend prediction for each segment. Corrected hight of trend line for irregular data: sets harmonic term based on mean DOY of observations / segment (instead of trend$harmon[] <- 0, which assumes regular data); idea based on suggestion by Achim Zeileis
       for(i in 1:length(unique(bpp$segment))) {
         seg <- unique(bpp$segment)[i]
-        trend <- subset(bpp, segment == seg)
+        # trend <- subset(bpp, segment == seg)
+        trend <- bpp[bpp$segment==seg, ]
         trend$days <- as.numeric(substr(trend$time, 6, 8))
         dmean <- mean(trend$days)
         har <- dmean/365
@@ -287,7 +286,7 @@ resIndSpatial <- function(x, dates, type='irregular', sc=1, order=3,
     return(resind)
   }
 
-  out <- mc.calc(x=x, fun=fun, mc.cores=mc.cores)
+  out <- bfastSpatial::mc.calc(x=x, fun=fun, mc.cores=mc.cores)
   names(out) <- c('BPNumb', 'Initial NDVI', 'Intercept', 'DBP','BpTime', 'Timelag', 'RecTrend', 'PreTrend', 'PreNDVI', 'MagObsA', 'MagObsR',
                   'MagTrendA', 'MagTrendR', 'AmpDiffR')
 

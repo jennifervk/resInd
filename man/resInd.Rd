@@ -66,9 +66,11 @@ data(d) # date vector
 
 #Plot first 9 layers of raster brick with NDVI scaling factor
 sc <- 0.0001
+library(raster)
 plot(stN*sc, 1:9)
 
-##With package "bfastSpatial" you can extract information on acquisition date from typical Landsat file names \\url{https://github.com/loicdtx/bfastSpatial}
+##With package "bfastSpatial" you can extract information on acquisition date
+# from typical Landsat file names \\url{https://github.com/loicdtx/bfastSpatial}
 #gs <- getSceneinfo(names(stN))
 #d <- gs$date
 

@@ -7,6 +7,7 @@
 #' @keywords data
 #' @examples
 #' data(stN)
+#' library(raster)
 #' plot(stN, 1:9)
 
 NULL

@@ -12,6 +12,7 @@ data(stN)
 }
 \examples{
 data(stN)
+library(raster)
 plot(stN, 1:9)
 }
 \author{

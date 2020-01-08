@@ -3,10 +3,11 @@ Type: Package
 Title: Change detection metrics from satellite time series
 Version: 3.6.1
 Date: 2019-10-23
-Authors@R: person("Jennifer", "von Keyserlingk", email = "j.keyserli@outlook.de", role = c("aut", "cre"))
+Authors@R: person("Jennifer", "von Keyserlingk", email = "j.keyserlingk@outlook.de", role = c("aut", "cre"))
 Description: Computes several change detection metrics based on a BFAST change detection framework for breakpoints ocurring during a given time period specified by the user (i.e. in our case years of a known drought). In addition, the overall number of breakpoints in the time series is extracted. Can be applied to individual pixel as well as to gridded time-series data. The included functions were designed for exploring the use of a breakpoint model to study the response of vegetation to drought and climatic perturbartions. The extracted change detection metrics are at an experimental stage.
-Depends: R (>= 3.4.1)
-Imports: bfast, strucchange, raster, parallel, MASS
+Depends: R (>= 3.4.0)
+Imports: bfast, strucchange, raster, parallel, MASS, zoo
+Suggests: bfastSpatial
 License: GPL(>=2)
 Encoding: UTF-8
 RoxygenNote: 6.1.1
