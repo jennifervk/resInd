@@ -76,8 +76,8 @@
 
 resInd <- function(x, dates, type='irregular', sc=1, order=3,
                    formula = response ~ (trend + harmon), h=0.15,
-                   plevel=0.05, dr, drd, s=3, NV=NA, plot=FALSE) {
-
+                   plevel=0.05, dr, drd, s=3, NV=NA, plot=FALSE, spatial=FALSE) {
+if(spatial) {if(plot) warning("if spatial, plot must be FALSE"); plot <- FALSE}
   #Set output vector to NA
   resind <- NA
 
@@ -180,7 +180,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
     names(amps) <- rep(1:length(unique(bpp$segment)), order)
 
 
-# Calculate (drought) resilience indicators -------------------------------
+    # Calculate (drought) resilience indicators -------------------------------
 
     ##If no (significant) breakpoint was found set breakpoint position,
     # breakpoint timing, and recovery trend to "NV"; set DBP to 0
@@ -266,27 +266,27 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
         AmpDiff <- NV
       }
     }
-    }else {
-      ##If all values NA (pixels without NDVI values!) set output variables to NA and give warning
-      warning('No observations in time series')
-      bpnumb <- NA
-      MIni <- NA
-      Int <- NA
-      DBP <- NA
-      bpt <- NA
-      tlag <- NA
-      trendrecov <- NA
-      pretrend <- NA
-      preNDVI <- NA
-      MagA <- NA
-      MagR <- NA
-      MagTA <- NA
-      MagTR <- NA
-      AmpDiff <- NA
-    }
+  }else {
+    ##If all values NA (pixels without NDVI values!) set output variables to NA and give warning
+    warning('No observations in time series')
+    bpnumb <- NA
+    MIni <- NA
+    Int <- NA
+    DBP <- NA
+    bpt <- NA
+    tlag <- NA
+    trendrecov <- NA
+    pretrend <- NA
+    preNDVI <- NA
+    MagA <- NA
+    MagR <- NA
+    MagTA <- NA
+    MagTR <- NA
+    AmpDiff <- NA
+  }
 
 
-# Plotting ----------------------------------------------------------------
+  # Plotting ----------------------------------------------------------------
 
   if(plot) {
     #windows() to open plot in separate window
@@ -326,7 +326,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
   }
 
 
-# Save and return output --------------------------------------------------
+  # Save and return output --------------------------------------------------
 
   #Save all indicators:
   resind <- cbind(bpnumb, MIni, as.numeric(Int), DBP, bpt, tlag, as.numeric(trendrecov), as.numeric(pretrend), preNDVI, MagA, MagR, MagTA, MagTR, AmpDiff)
