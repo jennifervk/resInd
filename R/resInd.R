@@ -178,7 +178,8 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
 
 # Calculate (drought) resilience indicators -------------------------------
 
-    ##If no (significant) breakpoint was found set breakpoint position, breakpoint timing, and recovery trend to "NV"; set DBP to 0
+    ##If no (significant) breakpoint was found set breakpoint position,
+    # breakpoint timing, and recovery trend to "NV"; set DBP to 0
     if(bpnumb==0){
       DBP <- 0
       bpt <- NV
@@ -197,7 +198,10 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
       ##If breakpoint, check if one breakpoint ocurred around drought period("drought breakpoint")
       bpd <- match(bd[bd >= dr[1] & bd <= dr[2]], bd) #bpd gives you the position of bp.
 
-      ##If drought breakpoint occured set DBP to 1 and calculate breakpoint timing, trend of recovery, trend in segment before BP, preNDVI, Magnitude of change (MagA & MagR) based on mean NDVI of s years before and after BP. If there is more than one BP in the specified time interval, the first one is chosen
+      ##If drought breakpoint occured set DBP to 1 and calculate breakpoint timing,
+      #trend of recovery, trend in segment before BP, preNDVI,
+      #  Magnitude of change (MagA & MagR) based on mean NDVI of s years before and after BP.
+      #If there is more than one BP in the specified time interval, the first one is chosen
       if (length(bpd) > 1) {
         bpd <- bpd[1]
       }
