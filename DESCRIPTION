@@ -1,6 +1,6 @@
 Package: resInd
 Type: Package
-Title: Change detection metrics from time series
+Title: Change detection metrics from satellite time series
 Version: 3.6.1
 Date: 2019-10-23
 Authors@R: person("Jennifer", "von Keyserlingk", email = "j.keyserlingk@outlook.de", role = c("aut", "cre"))
