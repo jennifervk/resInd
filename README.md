@@ -15,11 +15,11 @@ RecTrend: If MagOBSR was below or equal to -10%, we used RecTrend to estimate th
 PreNDVI: This was used as a measure for the "NDVI before breakpoint" (used in the regression analysis).
 
 
+
 Installation:
 The package can be installed from github with the package "devtools":
-
-  library(devtools)
-  install_github('jennifervk/resInd')
+library(devtools)
+install_github('jennifervk/resInd')
 
 
 
