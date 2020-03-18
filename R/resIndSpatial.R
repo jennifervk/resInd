@@ -1,11 +1,12 @@
 
 #' @title Runs function "resInd" on gridded time series and returns spatial output
-#'@description Computes several change detection metrics based on a BFAST type
-#'  change detection framework for breakpoints ocurring during a given time period
-#'  specified by the user (i.e. years of a known drought event). In addition,
-#'  the overall number of breakpoints in the time series, the overall mean of the
-#'  data and the inital value of the data at the beginning of the time series are extracted.
-#'  Applicable to to gridded time-series data.
+#'@description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend) 
+#' change detection framework. These change detection metrics are calculated for breakpoints occurring during a 
+#' given time period specified by the user (i.e. during a known drought). In addition, data about the full time 
+#' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the 
+#' dependent time series data. The included functions were designed for exploring the use of a breakpoint model 
+#' to study the response of vegetation to drought and climatic perturbartions. Please note that some of the 
+#' extracted change detection metrics are at an experimental stage. Applicable to to gridded time-series data.
 #' @param x RasterBrick or rasterStack object
 #' @param dates See \code{\link{resInd}}
 #' @param type See \code{\link{resInd}}
@@ -49,16 +50,7 @@
 #' 'AmpDiffR': Relative difference in mean amplitudes (based on sine and cosine terms
 #'   of harmonic model) in segment before and after drought breakpoint.
 #'
-#' @details The function \code{\link{resInd}} was designed to explore several change
-#'  detection metrics that can be extracted from a BFAST type change detection approach
-#'  in relation to drought. The extracted metrics are at the experimental stage
-#'  and should be used with caution. Not all metrics were found equally reliable:
-#'  for an irregular time series the interecept of the linear trend line within segments
-#'  (i.e. the height of the trend line after a breakpoint when plotted), was not stable.
-#'  Therefore, the metrics relying directly on this information ('MagTrendA', 'MagTrendR')
-#'  are equally not robust. The slope of the trend line within segments
-#'  ('RecTrend','PreTrend') was found to be a robust model parameter, however, as
-#'  well as the total number of breakpoints ('BPNumb').
+#' @details See \code{\link{resInd}}
 #'  The function 'resIndSpatial' requires the function 'mc.calc' from the package
 #'  'bfastSpatial' \url{https://github.com/loicdtx/bfastSpatial}, which you can install
 #'  from github.
