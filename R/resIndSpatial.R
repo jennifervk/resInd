@@ -1,6 +1,6 @@
 
 #' @title Runs function "resInd" on gridded time series and returns spatial output
-#'@description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend) 
+#' @description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend) 
 #' change detection framework. These change detection metrics are calculated for breakpoints occurring during a 
 #' given time period specified by the user (i.e. during a known drought). In addition, data about the full time 
 #' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the 
