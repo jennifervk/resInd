@@ -20,6 +20,7 @@ Installation:
 The package can be installed from github with the package "devtools":
 
 library(devtools)
+
 install_github('jennifervk/resInd')
 
 
