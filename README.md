@@ -18,6 +18,7 @@ PreNDVI: This was used as a measure for the "NDVI before breakpoint" (used in th
 
 Installation:
 The package can be installed from github with the package "devtools":
+
 library(devtools)
 install_github('jennifervk/resInd')
 
