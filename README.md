@@ -4,7 +4,7 @@ Please note that some of the change detection metrics returned by the functions 
 
 For the manuscript by von Keyserlingk and de Hoop et al. (currently under revision), we have applied the function "resIndSpatial.R" to our study area. For this analysis, we have only used the following parameters, which we consider robust:
 
-BPNumb: to extract the total number of breakpoints fitted to the NDVI time series. We used this as a measure for vegetation's long-term resistance to climatic variations
+BPNumb: to extract the total number of breakpoints fitted to the NDVI time series. We used this as a measure for vegetation's long-term resistance to climatic variations.
 
 DBP: to check if a breakpoint occurred between the hydrological years 2005 & 2008. 
 
