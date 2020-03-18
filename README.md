@@ -1,6 +1,6 @@
 # resInd
 Code for extraction of change detection metrics based on BFAST framework.
-Please note that some of the change detection metrics returned by the functions are at an experimental stage and were designed for exploration porposes.
+Please note that some of the change detection metrics returned by the functions are at an experimental stage and were designed for exploration purposes.
 
 For the manuscript by von Keyserlingk and de Hoop et al. (currently under revision), we have applied the function "resIndSpatial.R" to our study area. For this analysis, we have only used the following parameters, which we consider robust:
 
