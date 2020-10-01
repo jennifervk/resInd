@@ -60,7 +60,7 @@
 #'
 #' @examples
 #' #Load example raster data set (476 observations, 5x5 cells, including NA values)
-#' and date vector
+#' #and date vector
 #' data(stN) #raster brick
 #' data(d) # date vector
 #'
