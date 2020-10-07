@@ -369,7 +369,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
       seg <- unique(bpp$segment)[i]
       # trend <- subset(bpp, segment == seg)
       trend <- bpp[bpp$segment == seg,]
-      trend$days <- as.numeric(substr(trend$time, 6, 8))
+      trend$days <- as.numeric(substr(formatC(trend$time,format='f',digits=3), 6, 8))
       dmean <- mean(trend$days)
       har <- dmean/365
       trend$harmon[] <- rep(
