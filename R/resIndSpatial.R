@@ -1,11 +1,11 @@
 
 #' @title Runs function "resInd" on gridded time series and returns spatial output
-#' @description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend) 
-#' change detection framework. These change detection metrics are calculated for breakpoints occurring during a 
-#' given time period specified by the user (i.e. during a known drought). In addition, data about the full time 
-#' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the 
-#' dependent time series data. The included functions were designed for exploring the use of a breakpoint model 
-#' to study the response of vegetation to drought and climatic perturbartions. Please note that some of the 
+#' @description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend)
+#' change detection framework. These change detection metrics are calculated for breakpoints occurring during a
+#' given time period specified by the user (i.e. during a known drought). In addition, data about the full time
+#' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the
+#' dependent time series data. The included functions were designed for exploring the use of a breakpoint model
+#' to study the response of vegetation to drought and climatic perturbartions. Please note that some of the
 #' extracted change detection metrics are at an experimental stage. Applicable to to gridded time-series data.
 #' @param x RasterBrick or rasterStack object
 #' @param dates See \code{\link{resInd}}
@@ -49,6 +49,7 @@
 #'   line does not seem robust.
 #' 'AmpDiffR': Relative difference in mean amplitudes (based on sine and cosine terms
 #'   of harmonic model) in segment before and after drought breakpoint.
+#' 'Type': Typology of the drought breakpoint
 #'
 #' @details See \code{\link{resInd}}
 #'  The function 'resIndSpatial' requires the function 'mc.calc' from the package
@@ -213,6 +214,7 @@ fun <- function(x){
       MagTA <- NV
       MagTR <- NV
       AmpDiff <- NV
+      Type <- NV
       #Set breakpoint position to NA (needed for further calculations)
       bpd <- NA
     } else {
@@ -271,6 +273,31 @@ fun <- function(x){
 
         AmpDiff <- (mean_ampsseg2-mean_ampsseg1)/mean_ampsseg1 #relative difference between mean amplitudes
 
+        # Determine the breakpoint typology
+        # interrupted increase (accelerating)
+        if (pretrend>0 && trendrecov>0 && trendrecov>pretrend) {
+          Type <- 1
+        }
+        # interrupted increase (slowing down)
+        if (pretrend>0 && trendrecov>0 && trendrecov<pretrend) {
+          Type <- 2
+        }
+        # interrupted decrease (accelerating)
+        if (pretrend<0 && trendrecov<0 && trendrecov<pretrend) {
+          Type <- 3
+        }
+        # interrupted decrease (slowing down)
+        if (pretrend<0 && trendrecov<0 && trendrecov>pretrend) {
+          Type <- 4
+        }
+        # positive reversal
+        if (pretrend<0 && trendrecov>0) {
+          Type <- 5
+        }
+        # negative reversal
+        if (pretrend>0 && trendrecov<0) {
+          Type <- 6
+        }
       } else {
         ##If no breakpoint around drought occured set patrameters to NA
         warning('No drought breakpoint found')
@@ -285,6 +312,7 @@ fun <- function(x){
         MagTA <- NV
         MagTR <- NV
         AmpDiff <- NV
+        Type <- NV
       }
     }
   }else {
@@ -304,17 +332,19 @@ fun <- function(x){
     MagTA <- NA
     MagTR <- NA
     AmpDiff <- NA
+    Type <- NA
+
   }
 
   # Save and return output --------------------------------------------------
 
   #Save all indicators::
   resind <- cbind(bpnumb, MIni, as.numeric(Int), DBP, bpt, tlag, as.numeric(trendrecov),
-                  as.numeric(pretrend), preNDVI, MagA, MagR, MagTA, MagTR, AmpDiff)
+                  as.numeric(pretrend), preNDVI, MagA, MagR, MagTA, MagTR, AmpDiff,Type)
 
   colnames(resind) <- c('BPNumb', 'Initial NDVI', 'Intercept', 'DBP','BpTime',
                         'Timelag', 'RecTrend', 'PreTrend', 'PreNDVI', 'MagObsA',
-                        'MagObsR',   'MagTrendA', 'MagTrendR', 'AmpDiffR')
+                        'MagObsR',   'MagTrendA', 'MagTrendR', 'AmpDiffR','Type')
 
   return(resind)
   }
@@ -322,7 +352,7 @@ fun <- function(x){
   out <- bfastSpatial::mc.calc(x=x, fun=fun, mc.cores=mc.cores)
   names(out) <- c('BPNumb', 'Initial NDVI', 'Intercept', 'DBP','BpTime', 'Timelag',
                   'RecTrend', 'PreTrend', 'PreNDVI', 'MagObsA', 'MagObsR',
-                  'MagTrendA', 'MagTrendR', 'AmpDiffR')
+                  'MagTrendA', 'MagTrendR', 'AmpDiffR','Type')
 
   return(out)
 }

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602238727054.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "24F3B6E4",
+    "lastKnownWriteTime" : 1602848186,
+    "last_content_update" : 1602848186750,
+    "path" : "~/GitHub/resInd/R/resIndSpatial.R",
+    "project_path" : "R/resIndSpatial.R",
+    "properties" : {
+        "cursorPosition" : "331,15",
+        "scrollLine" : "297"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

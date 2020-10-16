@@ -1,11 +1,11 @@
 
 #' @title Extracts change detection metrics from satellite time series
-#' @description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend) 
-#' change detection framework. These change detection metrics are calculated for breakpoints occurring during a 
-#' given time period specified by the user (i.e. during a known drought). In addition, data about the full time 
-#' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the 
-#' dependent time series data. The included functions were designed for exploring the use of a breakpoint model 
-#' to study the response of vegetation to drought and climatic perturbartions. Please note that some of the 
+#' @description Computes several change detection metrics based on a BFAST (Break for Additive Season and Trend)
+#' change detection framework. These change detection metrics are calculated for breakpoints occurring during a
+#' given time period specified by the user (i.e. during a known drought). In addition, data about the full time
+#' series is extracted: the overall number of breakpoints as well as the overall mean and initial value of the
+#' dependent time series data. The included functions were designed for exploring the use of a breakpoint model
+#' to study the response of vegetation to drought and climatic perturbartions. Please note that some of the
 #' extracted change detection metrics are at an experimental stage. Applicable to individual pixels.
 #'
 #' @param x Numeric vector
@@ -69,6 +69,7 @@
 #'   line does not seem robust.
 #' 'AmpDiffR': Relative difference in mean amplitudes (based on sine and cosine terms
 #'   of harmonic model) in segment before and after drought breakpoint.
+#' 'Type': Typology of the drought breakpoint
 #'
 #' @details This function was designed to explore several change detection metrics
 #'  that can be extracted from a BFAST type change detection approach in relation
@@ -77,9 +78,9 @@
 #'  time series, the interecept of the linear trend line within segments (i.e. the
 #'  height of the trend line after a breakpoint when plotted), was not stable.
 #'  Therefore, the metrics relying directly on this information ('MagTrendA', 'MagTrendR')
-#'  are equally not robust. However, robust results were obtainded for the slope of the 
+#'  are equally not robust. However, robust results were obtainded for the slope of the
 #'  trend line within segments ('RecTrend','PreTrend'), as well as the metrics 'BPBumb',
-#'  'Initial NDVI', 'DBP', 'PreNDVI', 'MagObsR'. 
+#'  'Initial NDVI', 'DBP', 'PreNDVI', 'MagObsR' and 'Type'.
 #'  Those parts of the code dealing with the fitting of breakpoints to an irregular
 #'  time series, as well as the fitting of BFAST type models to a segmented time series
 #'  was based on the function "coefSegments" by Ben DeVries:
@@ -140,7 +141,6 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
   if(!all(is.na(bfts))){
     #Create data frame from bfastts
     bpp <- bfastpp(bfts, order=order, stl=("none"), na.action=na.omit)
-
     #Calculate initial NDVI: First s years after start of observations
     Ini <- subset(bpp, time >= bpp$time[1] & time <= bpp$time[1]+s)
     MIni <- mean(Ini$response)
@@ -208,7 +208,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
       seg <- unique(bpp$segment)[i]
       #trend <- subset(bpp, segment == seg)
       trend <- bpp[bpp$segment == seg,]
-      trend$days <- as.numeric(substr(trend$time, 6, 8))
+      trend$days <- as.numeric(substr(formatC(trend$time,format='f',digits=3), 6, 8))
       dmean <- mean(trend$days)
       har <- dmean/365
       trend$harmon[] <- rep(
@@ -251,6 +251,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
       MagTA <- NV
       MagTR <- NV
       AmpDiff <- NV
+      Type <- NV
       #Set breakpoint position to NA (needed for further calculations)
       bpd <- NA
     } else {
@@ -308,6 +309,32 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
 
         AmpDiff <- (mean_ampsseg2-mean_ampsseg1)/mean_ampsseg1 #relative difference between mean amplitudes
 
+        # Determine the breakpoint typology
+        # interrupted increase (accelerating)
+        if (pretrend>0 && trendrecov>0 && trendrecov>pretrend) {
+          Type <- 1
+        }
+        # interrupted increase (slowing down)
+        if (pretrend>0 && trendrecov>0 && trendrecov<pretrend) {
+          Type <- 2
+        }
+        # interrupted decrease (accelerating)
+        if (pretrend<0 && trendrecov<0 && trendrecov<pretrend) {
+          Type <- 3
+        }
+        # interrupted decrease (slowing down)
+        if (pretrend<0 && trendrecov<0 && trendrecov>pretrend) {
+          Type <- 4
+        }
+        # positive reversal
+        if (pretrend<0 && trendrecov>0) {
+          Type <- 5
+        }
+        # negative reversal
+        if (pretrend>0 && trendrecov<0) {
+          Type <- 6
+        }
+
       } else {
         ##If no breakpoint around drought occured set patrameters to NA
         warning('No drought breakpoint found')
@@ -322,6 +349,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
         MagTA <- NV
         MagTR <- NV
         AmpDiff <- NV
+        Type <- NV
       }
     }
   }else {
@@ -341,6 +369,7 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
     MagTA <- NA
     MagTR <- NA
     AmpDiff <- NA
+    Type <- NA
   }
 
   # Plotting ----------------------------------------------------------------
@@ -390,11 +419,11 @@ resInd <- function(x, dates, type='irregular', sc=1, order=3,
   #Save all indicators:
   resind <- cbind(bpnumb, MIni, as.numeric(Int), DBP, bpt, tlag,
                   as.numeric(trendrecov), as.numeric(pretrend), preNDVI, MagA,
-                  MagR, MagTA, MagTR, AmpDiff)
+                  MagR, MagTA, MagTR, AmpDiff,Type)
 
   colnames(resind) <- c('BPNumb', 'Initial NDVI', 'Intercept', 'DBP','BpTime',
                         'Timelag', 'RecTrend', 'PreTrend', 'PreNDVI', 'MagObsA',
-                        'MagObsR', 'MagTrendA', 'MagTrendR', 'AmpDiffR')
+                        'MagObsR', 'MagTrendA', 'MagTrendR', 'AmpDiffR','Type')
 
   return(resind)
 }
